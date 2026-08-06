@@ -1,0 +1,155 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="tk">
+<head>
+    <meta charset="UTF-8">
+    <title>Talon - {{ ticket.ticket_number }}</title>
+    <style>
+        @page {
+            size: 80mm auto;
+            margin: 0;
+        }
+        body {
+            font-family: 'Courier New', Courier, monospace;
+            width: 72mm;
+            margin: 0 auto;
+            padding: 10px 0;
+            text-align: center;
+            color: #000;
+        }
+        .header { font-size: 16px; font-weight: bold; margin-bottom: 5px; }
+        .sub-header { font-size: 12px; border-bottom: 1px dashed #000; padding-bottom: 5px; }
+        .ticket-number { font-size: 48px; font-weight: bold; margin: 15px 0 5px 0; }
+        .service { font-size: 14px; font-weight: bold; margin-bottom: 5px; }
+        .counter-box { font-size: 16px; font-weight: bold; background: #000; color: #fff; padding: 5px; margin: 10px 0; border-radius: 4px; }
+        .info { font-size: 11px; margin-top: 5px; }
+        .footer { font-size: 11px; border-top: 1px dashed #000; margin-top: 10px; padding-top: 5px; }
+
+        @media print {
+            .no-print { display: none !important; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">«Türkmentelekom»</div>
+    <div class="sub-header">Elektron nobat ulgamy</div>
+
+    <div class="service">Hyzmat: Balans doldurmak</div>
+    
+    <div class="ticket-number">{{ ticket.ticket_number }}</div>
+
+    <div class="counter-box">
+        Kassa: № 1
+    </div>
+
+    <div class="info">
+        Siziň öňüňizde: <strong>{{ waiting_ahead }} adam bar</strong>
+    </div>
+    <div class="info">Sene: {{ ticket.created_at|date:"d.m.Y H:i:s" }}</div>
+
+    <div class="footer">
+        Garaşmagyňyzy haýyş edýäris!<br>
+        Sag boluň!
+    </div>
+
+    <br>
+    <div class="no-print">
+        <button onclick="printAndPlayAudio()" style="padding: 10px 20px; font-size: 16px; cursor: pointer;">Çap etmek we Ses</button>
+        <a href="/ticket/create/" style="margin-left: 10px; color: #000; text-decoration: none;">Yza</a>
+    </div>
+
+    <script>
+        // --- TÜRKMEN DILI JANY-JIGERI BILEN ÖWRENIŞ ULgamy ---
+        class TurkmenHumanNeuralEngine {
+            constructor() {
+                this.storageKey = 'turkmen_human_voice_ai_memory';
+                this.memory = JSON.parse(localStorage.getItem(this.storageKey) || '{}');
+            }
+
+            adaptPhoneme(rawChar) {
+                let cleaned = rawChar.toLowerCase().trim();
+                if (cleaned === 'n') return 'ň';
+                if (cleaned === 'j') return 'ý';
+                return cleaned;
+            }
+
+            learnAndGetHumanDelay(contextSequence) {
+                let signature = contextSequence.join('->');
+                if (!this.memory[signature]) {
+                    this.memory[signature] = { iterations: 1, humanDelay: 25 }; 
+                } else {
+                    this.memory[signature].iterations += 1;
+                    if (this.memory[signature].humanDelay > 10) {
+                        this.memory[signature].humanDelay -= 0.5;
+                    }
+                }
+                localStorage.setItem(this.storageKey, JSON.stringify(this.memory));
+                return Math.max(10, Math.round(this.memory[signature].humanDelay));
+            }
+        }
+
+        // HÖKMAN BOLMALY: humanAI obýekti şu ýerde döredilýär
+        const humanAI = new TurkmenHumanNeuralEngine();
+
+        function redirectToHome() {
+            window.location.href = "/ticket/create/";
+        }
+
+        function printAndPlayAudio() {
+            let ticketNumber = "{{ ticket.ticket_number }}";   
+            
+            let audioDir = "/static/audio/";
+            let playlist = [];
+
+            // 1. Talon belgilerini Türkmen harplaryna laýyk öwürmek
+            for (let i = 0; i < ticketNumber.length; i++) {
+                let char = ticketNumber[i];
+                if (char === '-' || char === ' ' || char === '_') continue; 
+                
+                let adaptedChar = humanAI.adaptPhoneme(char);
+                let audioName = adaptedChar.toUpperCase();
+                playlist.push(audioDir + audioName + ".mp3");
+            }
+
+            // 2. Sözleri yzygiderli goşmak (papkada faýl atlary nähili bolsa şolary ýazyň)
+            playlist.push(audioDir + "Balans_doldurmak.mp3"); 
+
+            console.log("Pleýlist:", playlist);
+
+            playHumanizedQueue(playlist, function() {
+                console.log("Sesler gutardy, peçat açylýar...");
+                setTimeout(function() {
+                    window.print();
+                }, 300);
+            });
+
+            window.onafterprint = function() {
+                redirectToHome();
+            };
+        }
+
+        function playHumanizedQueue(files, onComplete) {
+            if (files.length === 0) {
+                if (typeof onComplete === 'function') onComplete();
+                return;
+            }
+
+            let audioFile = files.shift();
+            let audio = new Audio(audioFile);
+
+            audio.play().then(() => {
+                audio.onended = function() {
+                    let humanDelay = humanAI.learnAndGetHumanDelay(files);
+                    setTimeout(function() {
+                        playHumanizedQueue(files, onComplete);
+                    }, humanDelay);
+                };
+            }).catch(error => {
+                console.log("Faýl tapylmady ýa-da ýalňyşlyk: ", audioFile, error);
+                playHumanizedQueue(files, onComplete);
+            });
+        }
+    </script>
+</body>
+</html>

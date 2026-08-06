@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="tk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>«Marytelekom» — Elektron nobat terminaly</title>
+    <!-- FontAwesome ikonalary -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f4f6f9;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        /* Dil saýlaýan panel ýokarky sag burçda */
+        .lang-container {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            gap: 5px;
+        }
+
+        .lang-btn {
+            background: #ffffff;
+            border: 1px solid #cbd5e1;
+            padding: 8px 14px;
+            cursor: pointer;
+            font-weight: 600;
+            border-radius: 6px;
+            color: #334155;
+            transition: all 0.2s;
+        }
+
+        .lang-btn.active {
+            background: #0056b3;
+            color: white;
+            border-color: #004085;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .header h1 {
+            color: #0056b3;
+            font-size: 42px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: #6c757d;
+            font-size: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 650px;
+            background: #ffffff;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+        }
+
+        .services-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .service-btn {
+            color: white;
+            border: none;
+            padding: 25px 30px;
+            border-radius: 12px;
+            font-size: 22px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            text-align: left;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .service-btn:hover {
+            transform: translateY(-3px);
+            filter: brightness(0.95);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .service-btn .icon {
+            font-size: 32px;
+        }
+        a{
+            text-decoration: none;
+            color: #ffffff;
+        }
+
+        .footer {
+            margin-top: 35px;
+            color: #adb5bd;
+            font-size: 15px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Dil saýlaýan düwmeler -->
+    <div class="lang-container">
+        <button class="lang-btn active" onclick="setLanguage('tk')">TM</button>
+        <button class="lang-btn" onclick="setLanguage('ru')">RU</button>
+        <button class="lang-btn" onclick="setLanguage('en')">EN</button>
+    </div>
+
+    <div class="header">
+        <h1>«Marytelekom»</h1>
+        <p id="mainTitle">Hyzmat görnüşini saýlaň we talonyňyzy alyň</p>
+    </div>
+
+    <div class="container">
+        <form method="POST" action="" class="services-grid">
+            {% csrf_token %}
+
+            <button type="submit" name="service_type" value="Balans doldurmak" class="service-btn" style="background-color: #17a2b8;">
+                <span id="btn2"><a href="{% url 'Balans_ticket' %}">Balans doldurmak</a></span>
+                 <span class="icon"><i class="fa-solid fa-wallet"></i></span>
+            </button>
+
+            <button type="submit" name="service_type" value="Internet hyzmatlary" class="service-btn" style="background-color: #17a2b8;">
+                <span id="btn2"><a href="{% url 'Internet' %}">Internet hyzmatlary</a></span>
+                <span class="icon"><i class="fa-solid fa-globe"></i></span>
+            </button>
+
+            <button type="submit" name="service_type" value="Telefon / IPTV" class="service-btn" style="background-color: #28a745;">
+                <span id="btn3"><a href="{% url 'Telefon/IPTV' %}">Telefon / IPTV hyzmatlary</a></span>
+                <span class="icon"><i class="fa-solid fa-phone"></i></span>
+            </button>
+
+            <button type="submit" name="service_type" value="Maslahat" class="service-btn" style="background-color: #6c757d;">
+                <span id="btn4"><a href="{% url 'Maslahat' %}">Maslahat almak</a></span>
+                <span class="icon"><i class="fa-solid fa-circle-info"></i></span>
+            </button>
+        </form>
+    </div>
+
+    <div class="footer" id="footerText">
+        Abonentlere hyzmat ediş bölümi © 2026
+    </div>
+
+    <script>
+        const translations = {
+            tk: {
+                title: "Hyzmat görnüşini saýlaň we talonyňyzy alyň",
+                b1: "Balans doldurmak",
+                b2: "Internet hyzmatlary",
+                b3: "Telefon / IPTV hyzmatlary",
+                b4: "Maslahat almak",
+                footer: "Abonentlere hyzmat ediş bölümi © 2026"
+            },
+            ru: {
+                title: "Выберите услугу и получите талон",
+                b1: "Пополнение баланса",
+                b2: "Услуги интернета",
+                b3: "Услуги телефона / IPTV",
+                b4: "Консультация",
+                footer: "Отдел обслуживания абонентов © 2026"
+            },
+            en: {
+                title: "Select a service and get your ticket",
+                b1: "Top up balance",
+                b2: "Internet services",
+                b3: "Phone / IPTV services",
+                b4: "Consultation",
+                footer: "Customer Service Department © 2026"
+            }
+        };
+
+        function setLanguage(lang) {
+            document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+
+            document.getElementById('mainTitle').innerText = translations[lang].title;
+            document.getElementById('btn1').innerText = translations[lang].b1;
+            document.getElementById('btn2').innerText = translations[lang].b2;
+            document.getElementById('btn3').innerText = translations[lang].b3;
+            document.getElementById('btn4').innerText = translations[lang].b4;
+            document.getElementById('footerText').innerText = translations[lang].footer;
+
+            // Saýlanan dili brauzerde ýatda saklaýarys (talon sahypasyna geçirmek üçin)
+            localStorage.setItem('selectedLang', lang);
+        }
+    </script>
+</body>
+</html>
