@@ -58,12 +58,12 @@
     <br>
     <div class="no-print">
         <button onclick="printAndPlayAudio()" style="padding: 10px 20px; font-size: 16px; cursor: pointer;">Çap etmek we Ses</button>
-        <a href="/ticket/create/" style="margin-left: 10px; color: #000; text-decoration: none;">Yza</a>
+        <a href="{% url 'Telefon/IPTV' %}" style="margin-left: 10px; color: #000; text-decoration: none;">Yza</a>
     </div>
 
     <script>
         function redirectToHome() {
-            window.location.href = "/ticket/create/";
+            window.location.href = "{% url 'Telefon/IPTV' %}";
         }
 
         function printAndPlayAudio() {

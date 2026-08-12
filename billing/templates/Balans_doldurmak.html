@@ -33,7 +33,6 @@
     </style>
 </head>
 <body>
-
     <div class="header">«Türkmentelekom»</div>
     <div class="sub-header">Elektron nobat ulgamy</div>
 
@@ -58,12 +57,12 @@
     <br>
     <div class="no-print">
         <button onclick="printAndPlayAudio()" style="padding: 10px 20px; font-size: 16px; cursor: pointer;">Çap etmek we Ses</button>
-        <a href="/ticket/create/" style="margin-left: 10px; color: #000; text-decoration: none;">Yza</a>
+        <a href="{% url 'Balans_ticket' %}" style="margin-left: 10px; color: #000; text-decoration: none;">Yza</a>
     </div>
 
     <script>
         function redirectToHome() {
-            window.location.href = "/ticket/create/";
+            window.location.href = "{% url 'Balans_ticket' %}";
         }
 
         function printAndPlayAudio() {
@@ -71,13 +70,10 @@
             let audioDir = "/static/audio/";
             let playlist = [];
 
-            // Очищаем номер талона для соответствия имени файла (например, B-001.mp3)
             let cleanNumber = ticketNumber.replace(/[\s_]/g, '').trim();
 
-            // 1. Добавляем готовый слитный аудиофайл талона (например, /static/audio/B-001.mp3)
             playlist.push(audioDir + cleanNumber + ".mp3");
 
-            // 2. Добавляем завершающую фразу услуги (например, /static/audio/Balans doldurmak.mp3)
             playlist.push(audioDir + "Balans doldurmak.mp3"); 
 
             console.log("Pleýlist:", playlist);
@@ -94,7 +90,6 @@
             };
         }
 
-        // Глобальный объект аудио для мгновенного воспроизведения очереди без пауз
         const globalAudio = new Audio();
 
         function playFastQueue(files, onComplete) {
