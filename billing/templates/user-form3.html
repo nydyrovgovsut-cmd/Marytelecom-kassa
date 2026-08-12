@@ -143,5 +143,27 @@
     <div class="footer" id="footerText">
         Abonentlere hyzmat ediş bölümi © 2026
     </div>
+        <script>
+            document.addEventListener('keydown', function(event) {
+                if (
+                    event.key === 'F12' || 
+                    (event.ctrlKey && event.shiftKey && (event.key === 'I' || event.key === 'i' || event.key === 'J' || event.key === 'j')) ||
+                    (event.ctrlKey && (event.key === 'U' || event.key === 'u'))
+                ) {
+                    event.preventDefault();
+                    return false;
+                }
+            });
+
+            document.addEventListener('contextmenu', function(event) {
+                event.preventDefault();
+            });
+        </script>
+        <script>
+            history.pushState(null, null, location.href);
+            window.onpopstate = function () {
+                history.go(1);
+            };
+        </script>
 </body>
 </html>
