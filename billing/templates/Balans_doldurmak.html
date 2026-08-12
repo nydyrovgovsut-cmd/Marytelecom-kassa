@@ -62,22 +62,6 @@
     </div>
 
     <script>
-        class TurkmenHumanNeuralEngine {
-            constructor() {
-                this.storageKey = 'turkmen_human_voice_ai_memory';
-                this.memory = JSON.parse(localStorage.getItem(this.storageKey) || '{}');
-            }
-
-            adaptPhoneme(rawChar) {
-                let cleaned = rawChar.toLowerCase().trim();
-                if (cleaned === 'n') return 'ň';
-                if (cleaned === 'j') return 'ý';
-                return cleaned;
-            }
-        }
-
-        const humanAI = new TurkmenHumanNeuralEngine();
-
         function redirectToHome() {
             window.location.href = "/ticket/create/";
         }
@@ -87,17 +71,13 @@
             let audioDir = "/static/audio/";
             let playlist = [];
 
-            // Очищаем номер от лишних пробелов и символов, оставляя единый слитный массив символов
-            let cleanNumber = ticketNumber.replace(/[\s-_]/g, '').trim();
+            // Очищаем номер талона для соответствия имени файла (например, B-001.mp3)
+            let cleanNumber = ticketNumber.replace(/[\s_]/g, '').trim();
 
-            for (let i = 0; i < cleanNumber.length; i++) {
-                let char = cleanNumber[i];
-                let adaptedChar = humanAI.adaptPhoneme(char);
-                let audioName = adaptedChar.toUpperCase();
-                playlist.push(audioDir + audioName + ".mp3");
-            }
+            // 1. Добавляем готовый слитный аудиофайл талона (например, /static/audio/B-001.mp3)
+            playlist.push(audioDir + cleanNumber + ".mp3");
 
-            // Добавляем завершающую фразу услуги
+            // 2. Добавляем завершающую фразу услуги (например, /static/audio/Balans doldurmak.mp3)
             playlist.push(audioDir + "Balans doldurmak.mp3"); 
 
             console.log("Pleýlist:", playlist);
