@@ -60,7 +60,6 @@
     </div>
 
     <script>
-        // --- TÜRKMEN DILI JANY-JIGERI BILEN ÖWRENIŞ ULgamy ---
         class TurkmenHumanNeuralEngine {
             constructor() {
                 this.storageKey = 'turkmen_human_voice_ai_memory';
@@ -73,23 +72,8 @@
                 if (cleaned === 'j') return 'ý';
                 return cleaned;
             }
-
-            learnAndGetHumanDelay(contextSequence) {
-                let signature = contextSequence.join('->');
-                if (!this.memory[signature]) {
-                    this.memory[signature] = { iterations: 1, humanDelay: 25 }; 
-                } else {
-                    this.memory[signature].iterations += 1;
-                    if (this.memory[signature].humanDelay > 10) {
-                        this.memory[signature].humanDelay -= 0.5;
-                    }
-                }
-                localStorage.setItem(this.storageKey, JSON.stringify(this.memory));
-                return Math.max(10, Math.round(this.memory[signature].humanDelay));
-            }
         }
 
-        // HÖKMAN BOLMALY: humanAI obýekti şu ýerde döredilýär
         const humanAI = new TurkmenHumanNeuralEngine();
 
         function redirectToHome() {
@@ -98,30 +82,29 @@
 
         function printAndPlayAudio() {
             let ticketNumber = "{{ ticket.ticket_number }}";   
-            
             let audioDir = "/static/audio/";
             let playlist = [];
 
-            // 1. Talon belgilerini Türkmen harplaryna laýyk öwürmek
-            for (let i = 0; i < ticketNumber.length; i++) {
-                let char = ticketNumber[i];
-                if (char === '-' || char === ' ' || char === '_') continue; 
-                
+            // Очищаем номер от лишних пробелов и символов, оставляя единый слитный массив символов
+            let cleanNumber = ticketNumber.replace(/[\s-_]/g, '').trim();
+
+            for (let i = 0; i < cleanNumber.length; i++) {
+                let char = cleanNumber[i];
                 let adaptedChar = humanAI.adaptPhoneme(char);
                 let audioName = adaptedChar.toUpperCase();
                 playlist.push(audioDir + audioName + ".mp3");
             }
 
-            // 2. Sözleri yzygiderli goşmak (papkada faýl atlary nähili bolsa şolary ýazyň)
+            // Добавляем завершающую фразу услуги
             playlist.push(audioDir + "Balans doldurmak.mp3"); 
 
             console.log("Pleýlist:", playlist);
 
-            playHumanizedQueue(playlist, function() {
+            playFastQueue(playlist, function() {
                 console.log("Sesler gutardy, peçat açylýar...");
                 setTimeout(function() {
                     window.print();
-                }, 300);
+                }, 100);
             });
 
             window.onafterprint = function() {
@@ -129,25 +112,26 @@
             };
         }
 
-        function playHumanizedQueue(files, onComplete) {
+        // Глобальный объект аудио для мгновенного воспроизведения очереди без пауз
+        const globalAudio = new Audio();
+
+        function playFastQueue(files, onComplete) {
             if (files.length === 0) {
                 if (typeof onComplete === 'function') onComplete();
                 return;
             }
 
             let audioFile = files.shift();
-            let audio = new Audio(audioFile);
+            globalAudio.src = audioFile;
+            globalAudio.load();
 
-            audio.play().then(() => {
-                audio.onended = function() {
-                    let humanDelay = humanAI.learnAndGetHumanDelay(files);
-                    setTimeout(function() {
-                        playHumanizedQueue(files, onComplete);
-                    }, humanDelay);
-                };
-            }).catch(error => {
-                console.log("Faýl tapylmady ýa-da ýalňyşlyk: ", audioFile, error);
-                playHumanizedQueue(files, onComplete);
+            globalAudio.onended = function() {
+                playFastQueue(files, onComplete);
+            };
+
+            globalAudio.play().catch(error => {
+                console.log("Ýalňyşlyk: ", audioFile, error);
+                playFastQueue(files, onComplete);
             });
         }
     </script>
