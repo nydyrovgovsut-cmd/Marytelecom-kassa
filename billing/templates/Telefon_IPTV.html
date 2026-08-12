@@ -1,10 +1,11 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="tk">
-<head>
-    <meta charset="UTF-8">
-    <title>Talon - {{ ticket.ticket_number }}</title>
-    <link rel="icon" type="image/x-icon" href="{% static 'img/Telefon.ico' %}">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Talon - {{ ticket.ticket_number }}</title>
+        <link rel="icon" type="image/x-icon" href="{% static 'img/Telefon.ico' %}">
     <style>
         @page {
             size: 80mm auto;
@@ -41,7 +42,7 @@
     <div class="ticket-number">{{ ticket.ticket_number }}</div>
 
     <div class="counter-box">
-        Kassa: № 3
+        Kassa: № 4
     </div>
 
     <div class="info">
@@ -61,67 +62,31 @@
     </div>
 
     <script>
-        // --- TÜRKMEN DILI JANY-JIGERI BILEN ÖWRENIŞ ULgamy ---
-        class TurkmenHumanNeuralEngine {
-            constructor() {
-                this.storageKey = 'turkmen_human_voice_ai_memory';
-                this.memory = JSON.parse(localStorage.getItem(this.storageKey) || '{}');
-            }
-
-            adaptPhoneme(rawChar) {
-                let cleaned = rawChar.toLowerCase().trim();
-                if (cleaned === 'n') return 'ň';
-                if (cleaned === 'j') return 'ý';
-                return cleaned;
-            }
-
-            learnAndGetHumanDelay(contextSequence) {
-                let signature = contextSequence.join('->');
-                if (!this.memory[signature]) {
-                    this.memory[signature] = { iterations: 1, humanDelay: 25 }; 
-                } else {
-                    this.memory[signature].iterations += 1;
-                    if (this.memory[signature].humanDelay > 10) {
-                        this.memory[signature].humanDelay -= 0.5;
-                    }
-                }
-                localStorage.setItem(this.storageKey, JSON.stringify(this.memory));
-                return Math.max(10, Math.round(this.memory[signature].humanDelay));
-            }
-        }
-
-        // HÖKMAN BOLMALY: humanAI obýekti şu ýerde döredilýär
-        const humanAI = new TurkmenHumanNeuralEngine();
-
         function redirectToHome() {
             window.location.href = "/ticket/create/";
         }
 
         function printAndPlayAudio() {
-            let ticketNumber = "{{ ticket.ticket_number }}"; 
-                        
+            let ticketNumber = "{{ ticket.ticket_number }}";   
             let audioDir = "/static/audio/";
             let playlist = [];
 
-            // 1. Talon belgilerini Türkmen harplaryna laýyk öwürmek
-            for (let i = 0; i < ticketNumber.length; i++) {
-                let char = ticketNumber[i];
-                if (char === '-' || char === ' ' || char === '_') continue; 
-                
-                let adaptedChar = humanAI.adaptPhoneme(char);
-                let audioName = adaptedChar.toUpperCase();
-                playlist.push(audioDir + audioName + ".mp3");
-            }
+            // Очищаем номер талона для соответствия имени файла (например, B-001.mp3)
+            let cleanNumber = ticketNumber.replace(/[\s_]/g, '').trim();
 
-            // 2. Sözleri yzygiderli goşmak (papkada faýl atlary nähili bolsa şolary ýazyň)
+            // 1. Добавляем готовый слитный аудиофайл талона (например, /static/audio/B-001.mp3)
+            playlist.push(audioDir + cleanNumber + ".mp3");
+
+            // 2. Добавляем завершающую фразу услуги (например, /static/audio/Balans doldurmak.mp3)
             playlist.push(audioDir + "Telefon IPTV hzmaty.mp3"); 
+
             console.log("Pleýlist:", playlist);
 
-            playHumanizedQueue(playlist, function() {
+            playFastQueue(playlist, function() {
                 console.log("Sesler gutardy, peçat açylýar...");
                 setTimeout(function() {
                     window.print();
-                }, 300);
+                }, 100);
             });
 
             window.onafterprint = function() {
@@ -129,25 +94,26 @@
             };
         }
 
-        function playHumanizedQueue(files, onComplete) {
+        // Глобальный объект аудио для мгновенного воспроизведения очереди без пауз
+        const globalAudio = new Audio();
+
+        function playFastQueue(files, onComplete) {
             if (files.length === 0) {
                 if (typeof onComplete === 'function') onComplete();
                 return;
             }
 
             let audioFile = files.shift();
-            let audio = new Audio(audioFile);
+            globalAudio.src = audioFile;
+            globalAudio.load();
 
-            audio.play().then(() => {
-                audio.onended = function() {
-                    let humanDelay = humanAI.learnAndGetHumanDelay(files);
-                    setTimeout(function() {
-                        playHumanizedQueue(files, onComplete);
-                    }, humanDelay);
-                };
-            }).catch(error => {
-                console.log("Faýl tapylmady ýa-da ýalňyşlyk: ", audioFile, error);
-                playHumanizedQueue(files, onComplete);
+            globalAudio.onended = function() {
+                playFastQueue(files, onComplete);
+            };
+
+            globalAudio.play().catch(error => {
+                console.log("Ýalňyşlyk: ", audioFile, error);
+                playFastQueue(files, onComplete);
             });
         }
     </script>
