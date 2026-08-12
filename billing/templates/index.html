@@ -122,14 +122,6 @@
     </style>
 </head>
 <body>
-
-    <!-- Dil saýlaýan düwmeler -->
-    <div class="lang-container">
-        <button class="lang-btn active" onclick="setLanguage('tk')">TM</button>
-        <button class="lang-btn" onclick="setLanguage('ru')">RU</button>
-        <button class="lang-btn" onclick="setLanguage('en')">EN</button>
-    </div>
-
     <div class="header">
         <h1>«Marytelekom»</h1>
         <p id="mainTitle">Hyzmat görnüşini saýlaň we talonyňyzy alyň</p>
@@ -164,49 +156,5 @@
     <div class="footer" id="footerText">
         Abonentlere hyzmat ediş bölümi © 2026
     </div>
-
-    <script>
-        const translations = {
-            tk: {
-                title: "Hyzmat görnüşini saýlaň we talonyňyzy alyň",
-                b1: "Balans doldurmak",
-                b2: "Internet hyzmatlary",
-                b3: "Telefon / IPTV hyzmatlary",
-                b4: "Maslahat almak",
-                footer: "Abonentlere hyzmat ediş bölümi © 2026"
-            },
-            ru: {
-                title: "Выберите услугу и получите талон",
-                b1: "Пополнение баланса",
-                b2: "Услуги интернета",
-                b3: "Услуги телефона / IPTV",
-                b4: "Консультация",
-                footer: "Отдел обслуживания абонентов © 2026"
-            },
-            en: {
-                title: "Select a service and get your ticket",
-                b1: "Top up balance",
-                b2: "Internet services",
-                b3: "Phone / IPTV services",
-                b4: "Consultation",
-                footer: "Customer Service Department © 2026"
-            }
-        };
-
-        function setLanguage(lang) {
-            document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
-
-            document.getElementById('mainTitle').innerText = translations[lang].title;
-            document.getElementById('btn1').innerText = translations[lang].b1;
-            document.getElementById('btn2').innerText = translations[lang].b2;
-            document.getElementById('btn3').innerText = translations[lang].b3;
-            document.getElementById('btn4').innerText = translations[lang].b4;
-            document.getElementById('footerText').innerText = translations[lang].footer;
-
-            // Saýlanan dili brauzerde ýatda saklaýarys (talon sahypasyna geçirmek üçin)
-            localStorage.setItem('selectedLang', lang);
-        }
-    </script>
 </body>
 </html>
