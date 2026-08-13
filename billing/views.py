@@ -134,7 +134,7 @@ def telegraf_create_view(request):
     return render(request, 'user-form3.html')
 
 
-def Poçta_hyzmatlart(request):
+def Poçta_hyzmatlary(request):
     """Poçta hyzmatlary üçin talon döretmek funksiýasy"""
     if request.method == 'POST':
         service_type = 'Poçta hyzmatlary'

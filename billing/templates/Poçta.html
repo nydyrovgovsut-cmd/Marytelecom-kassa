@@ -5,7 +5,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Talon - {{ ticket.ticket_number }}</title>
-        <link rel="icon" type="image/x-icon" href="{% static 'img/Maslahat.ico' %}">
+        <link rel="icon" type="image/x-icon" href="{% static 'img/Poçta.ico' %}">
     <style>
         @page {
             size: 80mm auto;
@@ -37,7 +37,7 @@
     <div class="header">«Türkmentelekom»</div>
     <div class="sub-header">Elektron nobat ulgamy</div>
 
-    <div class="service">Hyzmat: Matty ýükleri ugratmak üçin hyzmatlar</div>
+    <div class="service">Hyzmat: Matty ýükleri ugratmak üçin </div>
     
     <div class="ticket-number">{{ ticket.ticket_number }}</div>
 
@@ -58,7 +58,7 @@
     <br>
     <div class="no-print">
         <button onclick="printAndPlayAudio()" style="padding: 10px 20px; font-size: 16px; cursor: pointer;">Çap etmek we Ses</button>
-        <a href="{% url 'Telegraf' %}" style="margin-left: 10px; color: #000; text-decoration: none;">Yza</a>
+        <a href="{% url 'Poçta' %}" style="margin-left: 10px; color: #000; text-decoration: none;">Yza</a>
     </div>
 
     <script>
@@ -78,7 +78,7 @@
             playlist.push(audioDir + cleanNumber + ".mp3");
 
             // 2. Добавляем завершающую фразу услуги (например, /static/audio/Balans doldurmak.mp3)
-            playlist.push(audioDir + "Haty ugratmak we almak hyzmaty .mp3"); 
+            playlist.push(audioDir + "Matty ýükleri ugratmak üçin .mp3"); 
 
             console.log("Pleýlist:", playlist);
 

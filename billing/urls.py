@@ -21,8 +21,8 @@ urlpatterns = [
     path('ticket/telegraf/<int:ticket_id>/', views.Telegraf, name='Telegraf4'),
 
     # Poçta hyzmaty üçin ýollar
-    path('ticket/Poçta/create/', views.Internet_hyzmatlary, name='Poçta'),
-    path('ticket/Poçta/<int:ticket_id>/', views.Internet1, name='Poçta5'),
+    path('ticket/Poçta/create/', views.Poçta_hyzmatlary, name='Poçta'),
+    path('ticket/Poçta/<int:ticket_id>/', views.Poçta5, name='Poçta5'),
 
 
     # Talonlary çykarmak üçin ýollar
@@ -30,7 +30,7 @@ urlpatterns = [
     path('ticket/internet/print1/<int:ticket_id>/', views.Internet1, name='Internet1'),
     path('ticket/telefon_iptv/print2/<int:ticket_id>/', views.Telefon_IPTV2, name='Telefon_IPTV2'),
     path('ticket/telegraf/<int:ticket_id>/', views.Telegraf, name='Telegraf4'),
-    path('ticket/Poçta/<int:ticket_id>/', views.Internet1, name='Poçta5'),
+    path('ticket/Poçta/<int:ticket_id>/', views.Poçta5, name='Poçta5'),
 
 ]
 
