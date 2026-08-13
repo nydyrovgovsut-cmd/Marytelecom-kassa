@@ -41,7 +41,7 @@ def Internet_hyzmatlary(request):
     if request.method == 'POST':
         service_type = 'Internet hyzmatlary'
         prefix = 'I'
-        cash_desk = '2'
+        cash_desk = '4,5,6'
 
         last_ticket = Ticket.objects.filter(service_type=service_type).order_by('-id').first()
         
@@ -104,8 +104,8 @@ def Telefon_IPTV(request):
 def telegraf_create_view(request):
     """Telegraf doldurmak üçin talon döretmek funksiýasy (POST gelende ýasaýar)"""
     if request.method == 'POST':
-        service_type = 'Telegraf'
-        prefix = 'T'
+        service_type = 'Haty almak we ugratmak'
+        prefix = 'H'
         cash_desk = '15'
 
         last_ticket = Ticket.objects.filter(service_type=service_type).order_by('-id').first()
@@ -129,9 +129,41 @@ def telegraf_create_view(request):
         )
 
         # Перенаправляем на страницу отображения конкретного талона
-        return redirect('Telegraf', ticket_id=ticket.id)
+        return redirect('Telegraf4', ticket_id=ticket.id)
 
     return render(request, 'user-form3.html')
+
+
+def Poçta_hyzmatlart(request):
+    """Poçta hyzmatlary üçin talon döretmek funksiýasy"""
+    if request.method == 'POST':
+        service_type = 'Poçta hyzmatlary'
+        prefix = 'P'
+        cash_desk = '11,12,13'
+
+        last_ticket = Ticket.objects.filter(service_type=service_type).order_by('-id').first()
+        
+        if last_ticket and '-' in str(last_ticket.ticket_number):
+            try:
+                last_number = int(str(last_ticket.ticket_number).split('-')[1])
+                next_number = last_number + 1
+            except (ValueError, IndexError):
+                next_number = 1
+        else:
+            next_number = 1
+
+        ticket_number = f"{prefix}-{next_number:03d}"
+        
+        ticket = Ticket.objects.create(
+            ticket_number=ticket_number,
+            service_type=service_type,
+            cash_desk=cash_desk,
+            status='waiting'
+        )
+
+        return redirect('Poçta5', ticket_id=ticket.id)
+
+    return render(request, 'user-form4.html')
 
 def print_ticket(request, ticket_id):
     """Balans talonyny çap etmek we görkezmek"""
@@ -199,3 +231,19 @@ def Telegraf(request, ticket_id=None):
         'waiting_ahead': waiting_ahead,
     }
     return render(request, 'Telegraf.html', context3)
+
+def Poçta5(request, ticket_id=None):
+    """Döredilen Poçta talonyny çap etmek we görkezmek"""
+    ticket = get_object_or_404(Ticket, id=ticket_id)
+
+    waiting_ahead = Ticket.objects.filter(
+        service_type=ticket.service_type, 
+        status='waiting', 
+        id__lt=ticket.id
+    ).count()
+
+    context3 = {
+        'ticket': ticket,
+        'waiting_ahead': waiting_ahead,
+    }
+    return render(request, 'Poçta.html', context3)
