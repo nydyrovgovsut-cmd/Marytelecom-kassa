@@ -25,33 +25,6 @@
             min-height: 100vh;
             padding: 20px;
         }
-
-        /* Dil saýlaýan panel ýokarky sag burçda */
-        .lang-container {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            display: flex;
-            gap: 5px;
-        }
-
-        .lang-btn {
-            background: #ffffff;
-            border: 1px solid #cbd5e1;
-            padding: 8px 14px;
-            cursor: pointer;
-            font-weight: 600;
-            border-radius: 6px;
-            color: #334155;
-            transition: all 0.2s;
-        }
-
-        .lang-btn.active {
-            background: #0056b3;
-            color: white;
-            border-color: #004085;
-        }
-
         .header {
             text-align: center;
             margin-bottom: 35px;
@@ -134,7 +107,7 @@
             {% csrf_token %}
 
             <button type="submit" name="service_type" value="Maslahat" class="service-btn" style="background-color: #28a745;">
-                <span id="btn4">Maslahat</span>
+                <span id="btn4">Telegraf</span>
                 <span class="icon"><i class="fa-solid fa-phone"></i></span>
             </button>
         </form>

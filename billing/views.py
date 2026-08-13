@@ -101,12 +101,12 @@ def Telefon_IPTV(request):
 
 
 
-def Maslahat(request):
-    """Maslahat doldurmak üçin talon döretmek funksiýasy"""
+def telegraf_create_view(request):
+    """Telegraf doldurmak üçin talon döretmek funksiýasy (POST gelende ýasaýar)"""
     if request.method == 'POST':
-        service_type = 'Maslahat'
-        prefix = 'M'
-        cash_desk = '4'
+        service_type = 'Telegraf'
+        prefix = 'T'
+        cash_desk = '15'
 
         last_ticket = Ticket.objects.filter(service_type=service_type).order_by('-id').first()
         
@@ -128,10 +128,10 @@ def Maslahat(request):
             status='waiting'
         )
 
-        return redirect('Maslahat4', ticket_id=ticket.id)
+        # Перенаправляем на страницу отображения конкретного талона
+        return redirect('Telegraf', ticket_id=ticket.id)
 
     return render(request, 'user-form3.html')
-
 
 def print_ticket(request, ticket_id):
     """Balans talonyny çap etmek we görkezmek"""
@@ -147,7 +147,7 @@ def print_ticket(request, ticket_id):
         'ticket': ticket,
         'waiting_ahead': waiting_ahead,
     }
-    return render(request, 'Balans_doldurmak.html', context)
+    return render(request, 'KassaN1.html', context)
 
 
 def Internet1(request, ticket_id):
@@ -184,8 +184,8 @@ def Telefon_IPTV2(request, ticket_id):
     return render(request, 'Telefon_IPTV.html', context2)
 
 
-def Maslahat4(request, ticket_id):
-    """Maslahat talonyny çap etmek we görkezmek"""
+def Telegraf(request, ticket_id=None):
+    """Döredilen telegraf talonyny çap etmek we görkezmek"""
     ticket = get_object_or_404(Ticket, id=ticket_id)
 
     waiting_ahead = Ticket.objects.filter(
@@ -198,4 +198,4 @@ def Maslahat4(request, ticket_id):
         'ticket': ticket,
         'waiting_ahead': waiting_ahead,
     }
-    return render(request, 'Maslahat.html', context3)
+    return render(request, 'Telegraf.html', context3)

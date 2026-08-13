@@ -16,15 +16,15 @@ urlpatterns = [
     path('ticket/telefon_iptv/create/', views.Telefon_IPTV, name='Telefon/IPTV'),
     path('ticket/telefon_iptv/print2/<int:ticket_id>/', views.Telefon_IPTV2, name='Telefon_IPTV2'),
 
-    # Maslahat hyzmaty üçin ýollar
-    path('ticket/maslahat/create/', views.Maslahat, name='Maslahat'),
-    path('ticket/maslahat/print4/<int:ticket_id>/', views.Maslahat4, name='Maslahat3'),
+    # Telegraf hyzmaty üçin ýollar
+    path('ticket/telegraf/create/', views.telegraf_create_view, name='Telegraf'),
+    path('ticket/telegraf/<int:ticket_id>/', views.Telegraf, name='Telegraf4'),
 
     # Talonlary çykarmak üçin ýollar
     path('ticket/balans/print/<int:ticket_id>/', views.print_ticket, name='print_ticket'),
     path('ticket/internet/print1/<int:ticket_id>/', views.Internet1, name='Internet1'),
     path('ticket/telefon_iptv/print2/<int:ticket_id>/', views.Telefon_IPTV2, name='Telefon_IPTV2'),
-    path('ticket/maslahat/print4/<int:ticket_id>/', views.Maslahat4, name='Maslahat4'),
+    path('ticket/telegraf/<int:ticket_id>/', views.Telegraf, name='Telegraf4'),
 
 ]
 
