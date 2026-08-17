@@ -3,10 +3,19 @@ from django.conf import settings
 from . import views
 
 urlpatterns = [
+
+
     # Balans hyzmaty üçin ýollar
     path('', views.index, name='index'),
     path('ticket/balans/create/', views.Balans_doldurmak, name='Balans_ticket'),
     path('ticket/balans/print/<int:ticket_id>/', views.print_ticket, name='print_ticket'),
+
+
+    path('operator/<int:counter_id>/', views.operator_panel, name='operator_panel'),
+
+    path('operator1/<str:counter_id>/', views.operator_panel_internet, name='operator_panel_Internet'),
+
+    path('operator2/<str:counter_id>/', views.operator_panel_pochta, name='operator_panel_poсhta'),
 
     # Internet hyzmaty üçin ýollar
     path('ticket/internet/create/', views.Internet_hyzmatlary, name='Internet'),
