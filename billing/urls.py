@@ -1,21 +1,23 @@
-from django.urls import path
+from django.urls import path, include
 from django.conf import settings
 from . import views
 
 urlpatterns = [
 
-
+    # TMCELL üçin operator_paneli
+    path('operator/balans/<int:counter_id>/', views.operator_panel, name='operator_panel'),
+    # Internet hyzmaty üçin operator_paneli
+    path('operator1/internet/<str:counter_id>/', views.operator_panel_internet, name='operator_panel_Internet'),
+    # Aragatnaşyk hyzmaty üçin operator_paneli
+    path('operator2/aragatnaşyk/<str:counter_id>/', views.operator_paneli_aragatnaşyk, name='operator_panel_Aragatnaşyk'),
+    # Telegraf hyzmaty üçin operator_paneli
+    path('operator3/telegraf/<str:counter_id>/', views.operator_paneli_telegraf, name='operator_panel_Telegraf'),
+    # Poçta üçin operator paneli
+    path('operator4/pochta/<str:counter_id>/', views.operator_panel_pochta, name='operator_panel_poсhta'),
     # Balans hyzmaty üçin ýollar
     path('', views.index, name='index'),
     path('ticket/balans/create/', views.Balans_doldurmak, name='Balans_ticket'),
     path('ticket/balans/print/<int:ticket_id>/', views.print_ticket, name='print_ticket'),
-
-
-    path('operator/<int:counter_id>/', views.operator_panel, name='operator_panel'),
-
-    path('operator1/<str:counter_id>/', views.operator_panel_internet, name='operator_panel_Internet'),
-
-    path('operator2/<str:counter_id>/', views.operator_panel_pochta, name='operator_panel_poсhta'),
 
     # Internet hyzmaty üçin ýollar
     path('ticket/internet/create/', views.Internet_hyzmatlary, name='Internet'),
