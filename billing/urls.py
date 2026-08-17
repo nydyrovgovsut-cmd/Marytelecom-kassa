@@ -43,5 +43,6 @@ urlpatterns = [
     path('ticket/telegraf/<int:ticket_id>/', views.Telegraf, name='Telegraf4'),
     path('ticket/Poçta/<int:ticket_id>/', views.Poçta5, name='Poçta5'),
 
+
 ]
 

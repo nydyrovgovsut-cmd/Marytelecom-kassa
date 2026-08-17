@@ -119,8 +119,9 @@ USE_TZ = True
 
 # Statiki faýllary bir ýere ýygnamak üçin (collectstatic işlände gerek bolýar)
 STATIC_URL = '/static/'
+
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'core',  'billing', 'static'),
+    BASE_DIR / 'static',
 ]
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 

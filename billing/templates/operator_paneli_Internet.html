@@ -1,48 +1,30 @@
+{% extends 'base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="tk">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Internet - Kassa № {{ counter_id }}</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7f6; text-align: center; margin: 0; padding: 20px; }
-        .panel-container { max-width: 600px; margin: 0 auto; background: #fff; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-        h1 { color: #333; font-size: 24px; margin-bottom: 20px; }
-        .ticket-display { font-size: 64px; font-weight: bold; color: #007bff; margin: 20px 0; background: #e9ecef; padding: 20px; border-radius: 8px; }
-        .info-text { font-size: 18px; color: #555; margin: 15px 0; }
-        .btn-next { background-color: #28a745; color: white; border: none; padding: 15px 30px; font-size: 20px; font-weight: bold; border-radius: 8px; cursor: pointer; width: 100%; transition: background 0.2s; }
-        .btn-next:hover { background-color: #218838; }
-        .back-link { display: inline-block; margin-top: 20px; color: #6c757d; text-decoration: none; font-size: 14px; }
-        .back-link:hover { text-decoration: underline; }
-    </style>
-</head>
-<body>
 
-    <div class="panel-container">
+{% block title %}Internet hyzmat bölümi - Kassa № {{ counter_id }}{% endblock %}
+
+{% block content %}
+    <div class="header" style="margin-bottom: 15px;">
         <h1>Internet hyzmat bölümi - Kassa № {{ counter_id }}</h1>
-        
-        <div class="info-text">Garaşýan talonlar sany: <strong>{{ waiting_ahead }}</strong></div>
-
-        <div class="ticket-display">
-            {% if ticket %}
-                {{ ticket.ticket_number }}
-            {% else %}
-                ---
-            {% endif %}
-        </div>
-
-        <form method="POST">
-            {% csrf_token %}
-            <input type="hidden" name="action" value="next">
-            <button type="submit" class="btn-next">
-                <i class="fa-solid fa-bullhorn"></i> Indiki talony çagyrmak
-            </button>
-        </form>
-
-        <a href="{% url 'index' %}" class="back-link"><i class="fa-solid fa-arrow-left"></i> Esasy sahypa gaýdyp barmak</a>
     </div>
 
-</body>
-</html>
+    <div class="info-text">Garaşýan talonlar sany: <strong>{{ waiting_ahead }}</strong></div>
+
+    <div class="ticket-display">
+        {% if ticket %}
+            {{ ticket.ticket_number }}
+        {% else %}
+            ---
+        {% endif %}
+    </div>
+
+    <form method="POST">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="next">
+        <button type="submit" class="btn-next">
+            <i class="fa-solid fa-bullhorn"></i> Indiki talony çagyrmak
+        </button>
+    </form>
+
+    <a href="{% url 'index' %}" class="back-link"><i class="fa-solid fa-arrow-left"></i> Esasy sahypa gaýdyp barmak</a>
+{% endblock %}

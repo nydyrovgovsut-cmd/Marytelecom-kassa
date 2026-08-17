@@ -96,11 +96,15 @@
             vertical-align: middle;
             margin-right: 10px;
         }
+        a{
+            color: #007bff;
+            text-decoration: none;
+        }
     </style>
 </head>
 <body>
     <div class="header">
-        <h1><a href="{% url 'index' %}"><img src="{% static 'img/Haty almak we ugratmak.png' %}" alt=""></a>«Marytelekom»</h1>
+        <h1><a href="{% url 'index' %}">«Marytelekom»</a></h1>
     </div>
     <div class="container">
         <form method="POST" action="" class="services-grid">
