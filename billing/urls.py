@@ -7,7 +7,7 @@ urlpatterns = [
     # TMCELL üçin operator_paneli
     path('operator/balans/<int:counter_id>/', views.operator_panel, name='operator_panel'),
     # Internet hyzmaty üçin operator_paneli
-    path('operator/internet/<str:counter_id>/', views.operator_panel_internet, name='operator_internet'),
+    path('operator5/internet/<str:counter_id>/', views.operator_panel_internet, name='operator_internet'),
     # Aragatnaşyk hyzmaty üçin operator_paneli
     path('operator2/aragatnaşyk/<str:counter_id>/', views.operator_paneli_aragatnaşyk, name='operator_panel_Aragatnaşyk'),
     # Telegraf hyzmaty üçin operator_paneli
@@ -15,7 +15,7 @@ urlpatterns = [
     # Poçta üçin operator paneli
     path('operator4/pochta/<str:counter_id>/', views.operator_panel_pochta, name='operator_panel_poсhta'),
     # Router sazlamak üçin operator_paneli
-    path('operator/Router/', views.operator_panel_Router, name='operator_panel_Router'),
+    path('operator6/Router/', views.operator_panel_Router, name='operator_panel_Router'),
     # Balans hyzmaty üçin ýollar
     path('', views.index, name='index'),
     path('ticket/balans/create/', views.Balans_doldurmak, name='Balans_ticket'),
