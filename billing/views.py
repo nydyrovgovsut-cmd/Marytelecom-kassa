@@ -151,7 +151,6 @@ def telegraf_create_view(request):
 
     return render(request, 'user-form3.html')
 
-from django.utils import timezone
 
 def Poçta_hyzmatlary(request):
     """Poçta hyzmatlary üçin talon döretmek funksiýasy"""
@@ -191,7 +190,37 @@ def Poçta_hyzmatlary(request):
 
     return render(request, 'user-form4.html')
 
-from django.utils import timezone
+def Router_sazlamak(request):
+    """Router sazlamak hyzmatlary üçin talon döretmek funksiýasy"""
+    if request.method == 'POST':
+        service_type = 'Router sazlamak'
+        prefix = 'R'
+
+        today = timezone.localdate()
+        last_ticket = Ticket.objects.filter(service_type=service_type).order_by('-id').first()
+        
+        if last_ticket and last_ticket.created_at.date() == today and '-' in str(last_ticket.ticket_number):
+            try:
+                last_number = int(str(last_ticket.ticket_number).split('-')[1])
+                next_number = last_number + 1
+            except (ValueError, IndexError):
+                next_number = 1
+        else:
+            next_number = 1
+
+        ticket_number = f"{prefix}-{next_number:03d}"
+        
+        ticket = Ticket.objects.create(
+            ticket_number=ticket_number,
+            service_type=service_type,
+            status='calling'  
+        )
+
+        return redirect('Router6', ticket_id=ticket.id)
+
+    return render(request, 'user-form6.html')
+
+
 
 def print_ticket(request, ticket_id):
     """Balans talonyny çap etmek we görkezmek"""
@@ -290,6 +319,24 @@ def Poçta5(request, ticket_id=None):
     }
     return render(request, 'Poçta.html', context4)
 
+def Router5(request, ticket_id):
+    """Router talonyny çap etmek we görkezmek"""
+    ticket = get_object_or_404(Ticket, id=ticket_id)
+
+    ticket_date = ticket.created_at.date()
+
+    waiting_ahead = Ticket.objects.filter(
+        service_type=ticket.service_type, 
+        status='waiting', 
+        created_at__date=ticket_date,
+        id__lt=ticket.id
+    ).count()
+
+    context1 = {
+        'ticket': ticket,
+        'waiting_ahead': waiting_ahead,
+    }
+    return render(request, 'Router_hyzmatlary.html', context1)
 
 
 def operator_panel(request, counter_id):
@@ -508,3 +555,28 @@ def operator_panel_pochta(request, counter_id):
         'waiting_ahead': waiting_ahead,
     }
     return render(request, 'operator_paneli_poçta.html', context5)
+
+def operator_panel_Router(request,):
+    play_sound = False
+    
+    if request.method == 'POST':
+        if request.POST.get('action') == 'next':
+            next_ticket = Ticket.objects.filter(service_type='Router sazlamak', status='waiting').order_by('created_at').first()
+            if next_ticket:
+                next_ticket.status = 'calling'
+                next_ticket.save()
+                play_sound = True
+
+    current_ticket = Ticket.objects.filter(
+        service_type='Router sazlamak', 
+        status='calling'
+    ).order_by('-created_at').first()
+
+    waiting_ahead = Ticket.objects.filter(service_type='Router sazlamak', status='waiting').count()
+
+    context = {
+        'ticket': current_ticket,
+        'waiting_ahead': waiting_ahead,
+        'play_sound': play_sound,
+    }
+    return render(request, 'operator_panel_Router.html', context)

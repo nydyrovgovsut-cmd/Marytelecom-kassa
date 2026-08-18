@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Router sazlamak bölümi{% endblock %}
+
+{% block content %}
+    <div class="header" style="margin-bottom: 15px;">
+        <h1>Router sazlamak bölümi</h1>
+    </div>
+
+    <div class="info-text">Garaşýan adam sany: <strong>{{ waiting_ahead }}</strong></div>
+
+    <div class="ticket-display">
+        {% if ticket %}
+            {{ ticket.ticket_number }}
+        {% else %}
+            ---
+        {% endif %}
+    </div>
+
+    <form method="POST">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="next">
+        <button type="submit" class="btn-next" style="background-color: #18238b;">
+            <i class="fa-solid fa-bullhorn"></i> Indiki adamy çagyrmak
+        </button>
+    </form>
+
+    <a href="{% url 'index' %}" class="back-link"><i class="fa-solid fa-arrow-left"></i> Esasy sahypa gaýdyp barmak</a>
+{% endblock %}

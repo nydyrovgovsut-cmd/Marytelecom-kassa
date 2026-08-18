@@ -14,6 +14,8 @@ urlpatterns = [
     path('operator3/telegraf/<str:counter_id>/', views.operator_paneli_telegraf, name='operator_panel_Telegraf'),
     # Poçta üçin operator paneli
     path('operator4/pochta/<str:counter_id>/', views.operator_panel_pochta, name='operator_panel_poсhta'),
+    # Router sazlamak üçin operator_paneli
+    path('operator/Router/', views.operator_panel_Router, name='operator_panel_Router'),
     # Balans hyzmaty üçin ýollar
     path('', views.index, name='index'),
     path('ticket/balans/create/', views.Balans_doldurmak, name='Balans_ticket'),
@@ -35,6 +37,9 @@ urlpatterns = [
     path('ticket/Poçta/create/', views.Poçta_hyzmatlary, name='Poçta'),
     path('ticket/Poçta/<int:ticket_id>/', views.Poçta5, name='Poçta5'),
 
+     # Routeri sazlamak üçin ýollar
+    path('ticket/Router/create/', views.Router_sazlamak, name='Router'),
+    path('ticket/Router/print7/<int:ticket_id>/', views.Router5, name='Router6'),
 
     # Talonlary çykarmak üçin ýollar
     path('ticket/balans/print/<int:ticket_id>/', views.print_ticket, name='print_ticket'),
@@ -42,6 +47,7 @@ urlpatterns = [
     path('ticket/telefon_iptv/print2/<int:ticket_id>/', views.Telefon_IPTV2, name='Telefon_IPTV2'),
     path('ticket/telegraf/<int:ticket_id>/', views.Telegraf, name='Telegraf4'),
     path('ticket/Poçta/<int:ticket_id>/', views.Poçta5, name='Poçta5'),
+    path('ticket/Router/print7/<int:ticket_id>/', views.Router5, name='Router6'),
 
 
 ]
