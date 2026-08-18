@@ -67,13 +67,11 @@
             let audioDir = "/static/audio/";
             let playlist = [];
 
-            // Очищаем номер талона для соответствия имени файла (например, B-001.mp3)
             let cleanNumber = ticketNumber.replace(/[\s_]/g, '').trim();
 
-            // 1. Добавляем готовый слитный аудиофайл талона (например, /static/audio/B-001.mp3)
             playlist.push(audioDir + cleanNumber + ".mp3");
 
-            playlist.push(audioDir + " .mp3"); 
+            playlist.push(audioDir + "Router_sazlamak.mp3"); 
 
             console.log("Pleýlist:", playlist);
 

@@ -18,13 +18,71 @@
         {% endif %}
     </div>
 
-    <form method="POST">
+    <!-- Скрытая или обычная форма для отправки POST-запроса -->
+    <form method="POST" id="operator-form">
         {% csrf_token %}
         <input type="hidden" name="action" value="next">
-        <button type="submit" class="btn-next" style="background-color: #18238b;">
+        
+        <!-- Кнопка запускает воспроизведение голоса -->
+        <button type="button" onclick="callNextTicket()" class="btn-next" style="background-color: #18238b;">
             <i class="fa-solid fa-bullhorn"></i> Indiki adamy çagyrmak
         </button>
     </form>
 
     <a href="{% url 'index' %}" class="back-link"><i class="fa-solid fa-arrow-left"></i> Esasy sahypa gaýdyp barmak</a>
+
+    <!-- Скрипт автоматического озвучивания и перехода на следующий талон -->
+    <script>
+        const globalAudio = new Audio();
+
+        function playFastQueue(files, onComplete) {
+            if (files.length === 0) {
+                if (typeof onComplete === 'function') onComplete();
+                return;
+            }
+
+            let audioFile = files.shift();
+            globalAudio.src = audioFile;
+            globalAudio.load();
+
+            globalAudio.onended = function() {
+                playFastQueue(files, onComplete);
+            };
+
+            globalAudio.play().catch(error => {
+                console.log("Ýalňyşlyk (ses tapylmady): ", audioFile, error);
+                playFastQueue(files, onComplete);
+            });
+        }
+
+        function callNextTicket() {
+            let ticketNumber = "{{ ticket.ticket_number|default:'' }}";   
+            
+            if (!ticketNumber || ticketNumber === "---") {
+                document.getElementById('operator-form').submit();
+                return;
+            }
+
+            let audioDir = "/static/audio/";
+            let playlist = [];
+
+    
+            let cleanNumber = ticketNumber.replace(/[\s_]/g, '').trim();
+
+            
+            playlist.push(audioDir + cleanNumber + ".mp3");
+
+
+            playlist.push(audioDir + "Geliň.mp3"); 
+
+            console.log("Sesler çalynýar:", playlist);
+
+
+            playFastQueue(playlist, function() {
+                console.log("Sesler gutardy. Indiki talona geçilýär (sahypa täzeçelenýär)...");
+                
+                document.getElementById('operator-form').submit();
+            });
+        }
+    </script>
 {% endblock %}
