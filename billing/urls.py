@@ -7,7 +7,7 @@ urlpatterns = [
     # TMCELL üçin operator_paneli
     path('operator/balans/<int:counter_id>/', views.operator_panel, name='operator_panel'),
     # Internet hyzmaty üçin operator_paneli
-    path('operator1/internet/<str:counter_id>/', views.operator_panel_internet, name='operator_panel_Internet'),
+    path('operator/internet/<str:counter_id>/', views.operator_panel_internet, name='operator_internet'),
     # Aragatnaşyk hyzmaty üçin operator_paneli
     path('operator2/aragatnaşyk/<str:counter_id>/', views.operator_paneli_aragatnaşyk, name='operator_panel_Aragatnaşyk'),
     # Telegraf hyzmaty üçin operator_paneli
