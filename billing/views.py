@@ -1,12 +1,12 @@
 from django.shortcuts import get_object_or_404, redirect, render
 from .models import Ticket
 from django.views.decorators.csrf import csrf_exempt
+from django.utils import timezone
 
 def index(request):
      return render(request, 'index.html')
 
-from django.utils import timezone
-
+@csrf_exempt
 def Balans_doldurmak(request):
     """Balans doldurmak üçin talon döretmek funksiýasy"""
     if request.method == 'POST':
@@ -43,6 +43,7 @@ def Balans_doldurmak(request):
 
     return render(request, 'user-form.html')
 
+@csrf_exempt
 def Internet_hyzmatlary(request):
     """Internet hyzmatlary üçin talon döretmek funksiýasy"""
     if request.method == 'POST':
@@ -75,7 +76,7 @@ def Internet_hyzmatlary(request):
 
     return render(request, 'user-form1.html')
 
-
+@csrf_exempt
 def Telefon_IPTV(request):
     """Telefon/IPTV doldurmak üçin talon döretmek funksiýasy"""
     if request.method == 'POST':
@@ -111,8 +112,7 @@ def Telefon_IPTV(request):
 
     return render(request, 'user-form2.html')
 
-
-
+@csrf_exempt
 def telegraf_create_view(request):
     """Telegraf doldurmak üçin talon döretmek funksiýasy (POST gelende ýasaýar)"""
     if request.method == 'POST':
@@ -151,7 +151,7 @@ def telegraf_create_view(request):
 
     return render(request, 'user-form3.html')
 
-
+@csrf_exempt
 def Poçta_hyzmatlary(request):
     """Poçta hyzmatlary üçin talon döretmek funksiýasy"""
     if request.method == 'POST':
@@ -190,6 +190,7 @@ def Poçta_hyzmatlary(request):
 
     return render(request, 'user-form4.html')
 
+@csrf_exempt
 def Router_sazlamak(request):
     """Router sazlamak hyzmatlary üçin talon döretmek funksiýasy"""
     if request.method == 'POST':
@@ -220,8 +221,7 @@ def Router_sazlamak(request):
 
     return render(request, 'user-form6.html')
 
-
-
+@csrf_exempt
 def print_ticket(request, ticket_id):
     """Balans talonyny çap etmek we görkezmek"""
     ticket = get_object_or_404(Ticket, id=ticket_id)
@@ -242,6 +242,7 @@ def print_ticket(request, ticket_id):
     }
     return render(request, 'KassaN1.html', context)
 
+@csrf_exempt
 def Internet1(request, ticket_id):
     """Internet talonyny çap etmek we görkezmek"""
     ticket = get_object_or_404(Ticket, id=ticket_id)
@@ -261,6 +262,7 @@ def Internet1(request, ticket_id):
     }
     return render(request, 'Internet_hyzmaty.html', context1)
 
+@csrf_exempt
 def Telefon_IPTV2(request, ticket_id):
     """Telefon/IPTV talonyny çap etmek we görkezmek"""
     ticket = get_object_or_404(Ticket, id=ticket_id)
@@ -280,6 +282,7 @@ def Telefon_IPTV2(request, ticket_id):
     }
     return render(request, 'Telefon_IPTV.html', context2)
 
+@csrf_exempt
 def Telegraf(request, ticket_id=None):
     """Döredilen telegraf talonyny çap etmek we görkezmek"""
     ticket = get_object_or_404(Ticket, id=ticket_id)
@@ -299,7 +302,7 @@ def Telegraf(request, ticket_id=None):
     }
     return render(request, 'Telegraf.html', context3)
 
-
+@csrf_exempt
 def Poçta5(request, ticket_id=None):
     """Döredilen poçta talonyny çap etmek we görkezmek"""
     ticket = get_object_or_404(Ticket, id=ticket_id)
@@ -319,6 +322,7 @@ def Poçta5(request, ticket_id=None):
     }
     return render(request, 'Poçta.html', context4)
 
+@csrf_exempt
 def Router5(request, ticket_id):
     """Router talonyny çap etmek we görkezmek"""
     ticket = get_object_or_404(Ticket, id=ticket_id)
@@ -338,7 +342,7 @@ def Router5(request, ticket_id):
     }
     return render(request, 'Router_hyzmatlary.html', context1)
 
-
+@csrf_exempt
 def operator_panel(request, counter_id):
     play_sound = False
     
@@ -556,7 +560,8 @@ def operator_panel_pochta(request, counter_id):
     }
     return render(request, 'operator_paneli_poçta.html', context5)
 
-def operator_panel_Router(request,):
+@csrf_exempt
+def operator_panel_Router(request):
     play_sound = False
     
     if request.method == 'POST':

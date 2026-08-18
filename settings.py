@@ -33,6 +33,8 @@ CSRF_TRUSTED_ORIGINS = [
     'https://172.16.18.192',
 ]
 
+SECURE_SSL_REDIRECT = False
+
 # Application definition
 
 INSTALLED_APPS = [
